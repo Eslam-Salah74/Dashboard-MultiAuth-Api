@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\UserRegisterRequest;
-use App\Http\Requests\Auth\UserLoginRequest;
+
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Controller;
 use App\Http\Resources\ApiResponse;
+use App\Http\Requests\Auth\UserLoginRequest;
+use App\Http\Requests\Auth\UserRegisterRequest;
 
 class UserAuthController extends Controller
 {
@@ -20,7 +21,7 @@ class UserAuthController extends Controller
 
     public function register(UserRegisterRequest $request): JsonResponse
     {
-        $user = $this->userService->register($request->validated());
+        $user = $this->userService->create($request->validated());
         return ApiResponse::success($user, 'User registered', 201);
     }
 

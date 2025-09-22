@@ -17,10 +17,10 @@ class AdminService
 
     public function create(array $data): Admin
     {
-        $data['password'] = Hash::make($data['password']); // hashing
+        $data['password'] = Hash::make($data['password']); 
         $admin = $this->adminRepository->create($data);
 
-        $admin->assignRole('super-admin'); // roles & permissions logic
+        $admin->assignRole('super-admin');
 
         return $admin;
     }

@@ -15,7 +15,7 @@ class UserService
         $this->userRepository = $userRepository;
     }
 
-    public function register(array $data)
+    public function create(array $data)
     {
         $data = Arr::only($data, ['name','email','password']);
         $data['password'] = Hash::make($data['password']);
@@ -23,7 +23,7 @@ class UserService
         $user = $this->userRepository->create($data);
 
         // assign default role (ensure role exists)
-        $user->assignRole('basic-user');
+        $user->assignRole('customer');
 
         return $user;
     }

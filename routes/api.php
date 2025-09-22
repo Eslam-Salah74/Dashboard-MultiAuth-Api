@@ -11,8 +11,13 @@ use App\Http\Controllers\Api\Auth\AdminAuthController;
 |--------------------------------------------------------------------------
 */
 
-Route::post('/user/register', [UserAuthController::class, 'register'])->name('userregister');
-Route::post('/user/login', [UserAuthController::class, 'login'])->name('userlogin');
+Route::prefix('user')->group(
+    function () {
+        Route::post('/register', [UserAuthController::class, 'register'])->name('userregister');
+        Route::post('/login', [UserAuthController::class, 'login'])->name('userlogin');
+    }
+);
+
 
 Route::prefix('admin')->group(function () {
     Route::post('/register', [AdminAuthController::class, 'register'])->name('admin.register');
