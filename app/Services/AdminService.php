@@ -3,34 +3,29 @@
 namespace App\Services;
 
 use App\Models\Admin;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Log;
-
-use Illuminate\Support\Facades\Hash;
 use App\Repositories\Contracts\AdminRepositoryInterface;
+use Illuminate\Support\Facades\Hash;
 
-class AdminService implements AdminServiceInterface
+class AdminService
 {
-    protected  $adminRepository;
+    protected $adminRepository;
 
     public function __construct(AdminRepositoryInterface $adminRepository)
     {
         $this->adminRepository = $adminRepository;
     }
 
-    public function register(array $data): Admin
+    public function create(array $data): Admin
     {
-        Log::info($data);
-        $data['password'] = Hash::make($data['password']);
+        $data['password'] = Hash::make($data['password']); // hashing
         $admin = $this->adminRepository->create($data);
 
-        // تعيين رول افتراضي مثلاً
-        $admin->assignRole('super-admin');
+        $admin->assignRole('super-admin'); // roles & permissions logic
 
         return $admin;
     }
 
-    public function login(array $credentials)
+    public function login(array $credentials): ?string
     {
         $admin = $this->adminRepository->findByEmail($credentials['email']);
 
@@ -38,11 +33,6 @@ class AdminService implements AdminServiceInterface
             return null;
         }
 
-        return $admin->createToken('admin_token')->plainTextToken;
-    }
-
-    public function profile(int $id)
-    {
-        return $this->adminRepository->findById($id);
+        return $admin->createToken('admin-token')->plainTextToken;
     }
 }

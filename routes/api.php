@@ -14,8 +14,11 @@ use App\Http\Controllers\Api\Auth\AdminAuthController;
 Route::post('/user/register', [UserAuthController::class, 'register'])->name('userregister');
 Route::post('/user/login', [UserAuthController::class, 'login'])->name('userlogin');
 
-Route::post('/admin/register', [AdminAuthController::class, 'register'])->name('adminregister');
-Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('adminlogin');
+Route::prefix('admin')->group(function () {
+    Route::post('/register', [AdminAuthController::class, 'register'])->name('admin.register');
+    Route::post('/login', [AdminAuthController::class, 'login'])->name('admin.login');
+});
+
 
 // Protected example routes
 Route::middleware(['auth:user', 'role:basic-user'])->group(function () {
